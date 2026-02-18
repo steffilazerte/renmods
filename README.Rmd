@@ -4,37 +4,39 @@ output:
     variant: markdown_github
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
-)
-```
 
-<!-- Add a project state badge
-See https://github.com/BCDevExchange/Our-Project-Docs/blob/master/discussion/projectstates.md
-If you have bcgovr installed and you use RStudio, click the 'Insert BCDevex Badge' Addin. -->
+[![img](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
+
 
 # renmods
 
-Description of package
+An R package to download, import, and filter data from [B.C.’s Environmental Monitoring Data System](https://www2.gov.bc.ca/gov/content/environment/research-monitoring-reporting/monitoring/environmental-monitoring-data-system) (EnMoDs) into R.
+
+The EnMoDs dataset is licensed under the [Open Government Licence - British Columbia](http://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61).
 
 ### Features
 
 ### Installation
 
+```{r install}
+## basic example code
+```
+
 ### Usage
+
+TBD
 
 #### Example
 
-This is a basic example which shows you how to solve a common problem:
+TBD
 
 ```{r example}
 ## basic example code
 ```
 
 ### Project Status
+
+Very first stages of development. 
 
 ### Getting Help or Reporting an Issue
 

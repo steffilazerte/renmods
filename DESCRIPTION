@@ -1,5 +1,5 @@
 Package: renmods
-Title: What the Package Does (One Line, Title Case)
+Title: Downloads and queries data from B.C. Environmental Monitoring Data System (EnMoDs)
 Version: 0.0.0.9000
 Authors@R: c(
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre")),
