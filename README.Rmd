@@ -1,12 +1,23 @@
 ---
 output:
-  md_document:
-    variant: markdown_github
+html_preview: true
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 
 [![img](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
+```{r, echo = FALSE, message=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "fig/README-"
+)
+# library(rems)
+# remove_data_cache("all")
+```
 
 # renmods
 
@@ -18,7 +29,7 @@ The EnMoDs dataset is licensed under the [Open Government Licence - British Colu
 
 ### Installation
 
-```{r install}
+```{r install, message=FALSE, results=FALSE}
 # install.packages("devtools") # if not already installed
 
 library(devtools)

@@ -34,25 +34,8 @@ install_github("bcgov/renmods")
 
     ## Using GitHub PAT from the git credential store.
 
-    ## Downloading GitHub repo bcgov/renmods@HEAD
-
-    ## ── R CMD build ─────────────────────────────────────────────────────────────────
-
-    ## WARNING: Rtools is required to build R packages, but no version of Rtools compatible with R 4.5.1 was found. (Only the following incompatible version(s) of Rtools were found: 4.4.6459)
-    ## 
-    ## Please download and install Rtools 4.5 from https://cran.r-project.org/bin/windows/Rtools/.
-
-    ##       ✔  checking for file 'C:\Users\kharker\AppData\Local\Temp\RtmpkrLx1m\remotes48145a3a5ea0\bcgov-renmods-8d2942b/DESCRIPTION' (2s)
-    ##       ─  preparing 'renmods': (399ms)
-    ##    checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
-    ##       ─  checking for LF line-endings in source and make files and shell scripts (1.3s)
-    ##   ─  checking for empty or unneeded directories
-    ##       ─  building 'renmods_0.0.0.9000.tar.gz'
-    ##      
-    ## 
-
-    ## Installing package into 'C:/Users/kharker/AppData/Local/R/win-library/4.5'
-    ## (as 'lib' is unspecified)
+    ## Skipping install of 'renmods' from a github remote, the SHA1 (6532c782) has not changed since last install.
+    ##   Use `force = TRUE` to force installation
 
 ### Usage
 
