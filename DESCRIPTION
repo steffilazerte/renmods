@@ -14,3 +14,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/bcgov/renmods
+BugReports: https://github.com/bcgov/renmods/issues
