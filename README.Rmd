@@ -1,11 +1,12 @@
 ---
-output:
+output: github_document
 html_preview: true
 editor_options: 
   markdown: 
     wrap: 72
 ---
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![img](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
@@ -29,7 +30,7 @@ The EnMoDs dataset is licensed under the [Open Government Licence - British Colu
 
 ### Installation
 
-```{r install, message=FALSE, results=FALSE}
+```{r install, echo = FALSE, message=FALSE}
 # install.packages("devtools") # if not already installed
 
 library(devtools)

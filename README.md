@@ -1,3 +1,6 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 [![img](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
 # renmods
@@ -15,27 +18,6 @@ Columbia](http://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61)
 ### Features
 
 ### Installation
-
-``` r
-# install.packages("devtools") # if not already installed
-
-library(devtools)
-```
-
-    ## Loading required package: usethis
-
-``` r
-install_github("bcgov/renmods")
-```
-
-    ## WARNING: Rtools is required to build R packages, but no version of Rtools compatible with R 4.5.1 was found. (Only the following incompatible version(s) of Rtools were found: 4.4.6459)
-    ## 
-    ## Please download and install Rtools 4.5 from https://cran.r-project.org/bin/windows/Rtools/.
-
-    ## Using GitHub PAT from the git credential store.
-
-    ## Skipping install of 'renmods' from a github remote, the SHA1 (6532c782) has not changed since last install.
-    ##   Use `force = TRUE` to force installation
 
 ### Usage
 
