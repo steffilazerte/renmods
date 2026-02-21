@@ -26,17 +26,35 @@ check_type <- function(type) {
   }
 }
 
-check_cache <- function(path, force) {
-  # TODO: Check date
+check_cache <- function(type, force) {
+  path <- cache_path(type)
+  update <- FALSE
 
   if (!file.exists(path)) {
     update <- TRUE
   } else if (force) {
     update <- TRUE
     cli_alert_info("Forcing update of cached data")
-  } else {
-    update <- FALSE
+  } else if (check_time_to_update(type)) {
+    update <- TRUE
   }
 
+  update
+}
+
+check_time_to_update <- function(type) {
+  d <- cache_meta(type = type)$last_downloaded
+  if (is.na(d)) {
+    update <- TRUE
+  } else {
+    diff <- difftime(Sys.time(), d, units = "weeks")
+    update <- diff > renmods()$update[type]
+  }
+  if (update) {
+    update <- ask(
+      "Data '{type}' is older than {renmods()$update[type]} weeks. Update data?",
+      "Updating '{type}' data"
+    )
+  }
   update
 }
