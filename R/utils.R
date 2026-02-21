@@ -64,8 +64,25 @@ dt_to_char <- function(dates) {
 }
 
 char_to_dt <- function(dates) {
-  stringr::str_split_1(dates, " to ")
+  dt <- stringr::str_split_1(dates, " to ")
+  if (length(dt) == 1) {
+    dt <- c("1900-01-01", dt)
+  }
+  as.Date(dt)
 }
+
+which_data_types <- function(dates) {
+  cache_meta() |>
+    dplyr::mutate(
+      in_range = purrr::map_lgl(.data$date_range, \(dt) {
+        dt <- char_to_dt(dt)
+        !(all(dt < dates) | all(dt > dates))
+      })
+    ) |>
+    dplyr::filter(.data$in_range) |>
+    dplyr::pull(.data$type)
+}
+
 
 ask <- function(msg, no_ask = NULL) {
   if (interactive()) {
