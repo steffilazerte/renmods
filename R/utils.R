@@ -84,9 +84,9 @@ which_data_types <- function(dates) {
 }
 
 
-ask <- function(msg, no_ask = NULL) {
+ask <- function(msg, no_ask = NULL, call = rlang::caller_env()) {
   if (interactive()) {
-    cli_alert_warning(msg)
+    cli_alert_warning(msg, .envir = call)
     go <- utils::askYesNo(msg = "", default = TRUE)
     go <- isTRUE(go)
   } else {
