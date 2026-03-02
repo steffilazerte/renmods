@@ -14,7 +14,7 @@
 
 #' Title
 #'
-#' @param type
+#' @param types
 #'
 #' @returns
 #'
@@ -23,33 +23,42 @@
 #' renmods_update()
 #' renmods_update("all")
 
-renmods_update <- function(type = "current", force = FALSE) {
+renmods_update <- function(types = "this_yr", force = FALSE) {
+  types <- check_types(types)
+
   # Repeat for "all" if requested
-  if (type == "all") {
-    purrr::walk(renmods()$types, \(t) renmods_update(t, force = force))
+  if (length(types) > 1) {
+    purrr::walk(types, \(t) renmods_update(t, force = force))
     return(invisible())
   }
 
-  check_type(type)
+  # Single type from here on
+  type <- types
 
+  if (check_cache(type, force)) {
+    renmods_update_(type)
+  } else {
+    cli_alert_success(
+      "Data '{type}' already present and up-to-date (use `force = TRUE` to update anyway)"
+    )
+  }
+}
+
+
+renmods_update_ <- function(type) {
   path <- cache_path(type)
   url <- getOption("renmods.urls")[[type]]
 
   cli_par()
   cli_alert("Downloading '{type}' data from ENMODS")
+  cli_alert_info("Saving to cache: {path}")
 
-  if (check_cache(type, force)) {
-    cli_alert_info("Saving to cache: {path}")
+  httr2::request(url) |>
+    httr2::req_progress() |>
+    httr2::req_perform(path = path)
 
-    httr2::request(url) |>
-      httr2::req_progress() |>
-      httr2::req_perform(path = path)
+  # Record metadata
+  cache_meta(types = type, update = TRUE)
 
-    # Record metadata
-    cache_meta(update = type)
-
-    cli_alert_success("Data '{type}' successfully downloaded")
-  } else {
-    cli_alert_success("Data '{type}' already present and up-to-date")
-  }
+  cli_alert_success("Data '{type}' successfully downloaded")
 }
