@@ -12,12 +12,24 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-cache_dir <- function() {
+#' Title
+#'
+#' @param check_only
+#'
+#' @returns
+#'
+#' @export
+#' @examples
+cache_dir <- function(check_only = FALSE) {
   path <- getOption(
     "renmods.cache_dir",
     default = tools::R_user_dir("renmods", which = "data")
   ) |>
     normalizePath(mustWork = FALSE)
+
+  if (check_only) {
+    return(dir.exists(path))
+  }
 
   if (!dir.exists(path)) {
     create <- ask(
@@ -35,56 +47,138 @@ cache_dir <- function() {
   path
 }
 
-cache_path <- function(type) {
-  check_type(type)
-  path <- file.path(cache_dir(), paste0(type, ".csv.gz"))
+cache_path <- function(types) {
+  types <- check_types(types)
+  path <- file.path(cache_dir(), paste0(types, ".csv.gz"))
   path
 }
 
-cache_meta <- function(type = NULL, update = NULL) {
+#' Fetch or update cache metadata
+#'
+#' This is an internal function to prevent users from accidentally updating
+#' the last download dates for the cache. Users should use `cache_status()`
+#' instead.
+#'
+#' @param types Character. Types of ENMODS data to check.
+#' @param update Logical. Whether or not to update the metadata (assumes data
+#' has just been downloaded).
+#'
+#' @returns
+#'
+#' @noRd
+#' @examples
+#' cache_meta()
+cache_meta <- function(types = renmods()$types, update = FALSE) {
+  meta_blank <- data.frame(
+    type = renmods()$types,
+    last_downloaded = NA_character_,
+    date_range = NA_character_,
+    renmods_version = NA_character_,
+    path = NA_character_
+  )
+
   path <- file.path(cache_dir(), "metadata.csv")
 
   if (file.exists(path)) {
     meta <- read.csv(path)
+    meta[!file.exists(meta$path), ] <- meta_blank[!file.exists(meta$path), ]
+    write.csv(meta, path, row.names = FALSE) # Update any missing files
   } else {
-    meta <- data.frame(
-      type = renmods()$types,
-      last_downloaded = NA_character,
-      date_range = NA_character_,
-      renmods_version = NA_character_
-    )
+    meta <- meta_blank
   }
-  if (!is.null(update)) {
-    dates <- update |>
-      cache_path() |>
-      extract_date_range() |>
-      dt_to_char()
+
+  if (update) {
+    f <- cache_path(types)
+    f <- f[file.exists(f)]
+
+    dates <- extract_date_range(f)
 
     meta <- dplyr::rows_upsert(
       meta,
       data.frame(
-        type = update,
+        type = types,
         last_downloaded = as.character(round(Sys.time())),
         date_range = dates,
-        renmods_version = as.character(packageVersion("renmods"))
+        renmods_version = as.character(packageVersion("renmods")),
+        path = f
       ),
       by = "type"
     )
+    write.csv(meta, path, row.names = FALSE)
+  } else {
+    if (!is.null(types)) {
+      meta <- dplyr::filter(meta, .data$type %in% .env$types)
+    }
+    return(meta)
   }
-  write.csv(meta, path, row.names = FALSE)
-
-  if (!is.null(type)) {
-    meta <- dplyr::filter(meta, .data$type == .env$type)
-  }
-  invisible(meta)
 }
 
+#' Cache Status
+#'
+#' @returns
+#'
+#' @export
+#' @examples
+#' cache_status()
 cache_status <- function() {
-  # TODO: Return list of files, dates, and sizes
+  if (cache_dir(check_only = TRUE)) {
+    cache_meta()
+  } else {
+    cli_inform("No cache")
+  }
 }
 
-cache_exists <- function() {
-  # TODO: Need this?
-}
+#' Title
+#'
+#' @param types
+#'
+#' @returns
+#'
+#' @export
+#' @examples
+#' \dontrun{
+#' # Remove everything including the directory
+#' cache_remove()
+#'
+#' # Remove specific data types
+#' cache_remove(types = c("this_yr", "yr_2_5"))
+#' }
+cache_remove <- function(types = "all") {
+  if (!cache_dir(check_only = TRUE)) {
+    cli_inform("No cache to remove")
+    return(invisible(TRUE))
+  }
 
-cache_date <- function() {}
+  if (length(types) == 1 && types == "all") {
+    full <- TRUE
+    f <- c(
+      cache_dir(),
+      list.files(
+        cache_dir(),
+        full.names = TRUE,
+        recursive = TRUE,
+        include.dirs = TRUE
+      )
+    )
+  } else {
+    full <- FALSE
+    types <- check_types(types)
+    f <- cache_path(types)
+  }
+
+  cli_alert_info("Cache to be removed:")
+  cli_ul(f)
+
+  remove <- ask(
+    "Are you sure you would like to completely these files/folders?",
+    "Removing the cache"
+  )
+  if (remove) {
+    unlink(f, recursive = TRUE)
+  }
+  if (!full) {
+    cache_meta()
+  } # Ping to update removed file status
+
+  invisible(TRUE)
+}

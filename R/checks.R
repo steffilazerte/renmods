@@ -12,9 +12,14 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-check_type <- function(type) {
+check_types <- function(types) {
   t <- renmods()$types
-  if (!all(type %in% t)) {
+
+  if (length(types) == 1 && types == "all") {
+    return(t)
+  }
+
+  if (!all(types %in% t)) {
     rlang::abort(
       paste0(
         "Type must be one of '",
@@ -24,37 +29,88 @@ check_type <- function(type) {
       call = NULL
     )
   }
+  types
 }
 
-check_cache <- function(type, force) {
-  path <- cache_path(type)
+#' Check date are in correct format
+#'
+#' Check and if valid, convert dates/text to date format.
+#'
+#' @param dates Vector to test for coercion to dates.
+#' @param range Logical. Whether to test if `dates` includes a date range.
+#'
+#' @returns `dates` as R Date format
+#'
+#' @noRd
+#' @examples
+#' check_dates(Sys.Date())
+#' check_dates("2024-02-29")
+#' # check_dates("2025-13-01") # Error
+check_dates <- function(dates, range = FALSE) {
+  tryCatch(as.Date(dates), error = \(e) {
+    cli_abort(
+      "Dates must be valid dates in the format of YYYY-MM-DD",
+      call = NULL
+    )
+  })
+
+  if (range) {
+    if (length(dates) != 2) {
+      cli_abort(
+        "{.var dates} must have two values, a start date and an end date"
+      )
+    }
+    dates <- sort(dates)
+  }
+
+  # To avoid weird problems with as.Date on POSIXct in R base, truncate first.
+  # (could also use lubridate::as_date() to avoid this issue)
+
+  dates <- stringr::str_extract(dates, "^\\d{4}-\\d{2}-\\d{2}") |>
+    as.Date()
+
+  dates
+}
+
+check_cache <- function(type, force = FALSE) {
   update <- FALSE
 
+  path <- cache_path(type)
   if (!file.exists(path)) {
     update <- TRUE
   } else if (force) {
     update <- TRUE
     cli_alert_info("Forcing update of cached data")
-  } else if (check_time_to_update(type)) {
-    update <- TRUE
+  } else {
+    update <- check_time_to_update(type)
   }
 
   update
 }
 
+#'
+#'
+#' @param type
+#'
+#' @returns
+#'
+#' @noRd
+#' @examples
+#' check_time_to_update("this_yr")
 check_time_to_update <- function(type) {
-  d <- cache_meta(type = type)$last_downloaded
-  if (is.na(d)) {
-    update <- TRUE
-  } else {
-    diff <- difftime(Sys.time(), d, units = "weeks")
-    update <- diff > renmods()$update[type]
-  }
+  # This function should only be called if the data already exists
+  d <- cache_meta(types = type)$last_downloaded
+  w <- renmods()$update[type]
+  diff <- difftime(Sys.time(), d, units = "weeks")
+  update <- diff > renmods()$update[type]
+
   if (update) {
     update <- ask(
-      "Data '{type}' is older than {renmods()$update[type]} weeks. Update data?",
+      "Data '{type}' is older than {w} weeks. Update data?",
       "Updating '{type}' data"
     )
+  } else {
+    cli_alert_success("{type}: Last downloaded {d} (within {w} week(s))")
   }
   update
 }
