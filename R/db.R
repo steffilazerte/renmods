@@ -12,27 +12,73 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-#' Title
+#' Connect to the RENMODS data
 #'
-#' @param date_range
-#' @param type
+#' Connect to the RENMODS data via Duck DB. Can prefilter the data by either a
+#' date range (`dates`) or data types (`types`). `dates` take precedence if both
+#' are supplied. Use dplyr's `collect()` function to read in the final data from
+#' the connection. The fewer data sources connected to and the smaller the
+#' dataset, the quicker the `collect()` function will run.
+#'
+#' @param dates Character/Dates vector. Start and end dates for filtering data.
+#' @param types Character. Type of data to read. One of "all", "this_yr",
+#' "yr_2_5", "yr_5_10", or "historical".
 #'
 #' @returns
 #'
 #' @export
 #' @examples
-#' db <- renmods_connect(c("2025-01-01", "2025-02-01"))
+#' library(dplyr)
+#'
+#' # All data
 #' db <- renmods_connect()
+#'
+#' # All current data
+#' db <- renmods_connect(types = "this_yr")
+#'
+#' # Use a date range to specify the data
+#' db <- renmods_connect(c("2025-01-01", "2025-02-01"))
+#' colnames(db) # Get a list of Column names
+#' glimpse(db)  # Quick look at the Columns and data
+#'
+#' db |>
+#'   filter(Location_ID %in% c("E327371", "E300230")) |>
+#'   select(
+#'     "Location_ID", "Location_Name", "Observed_Date_Time",
+#'     "Observed_Property_Name", "Result_Value", "Result_Unit",
+#'     "Analysis_Method_ID"
+#'   ) |>
+#' collect()
 
-renmods_connect <- function(date_range = NULL, types = "all") {
-  if (!is.null(date_range)) {
-    date_range <- as.Date(date_range)
-    types <- which_data_types(date_range)
+renmods_connect <- function(dates = NULL, types = "all") {
+  if (!is.null(dates)) {
+    dates <- check_dates(dates, range = TRUE)
+    types <- which_data_types(dates)
+  } else if (!is.null(types)) {
+    types <- check_types(types)
   } else {
     types <- renmods()$types
   }
 
-  cli_alert_info("Reading data {types}")
+  cli_alert_info(
+    paste0(
+      "Connecting to {.val {types}} data",
+      if (!is.null(dates)) " for dates between {dates[1]} and {dates[2]}"
+    )
+  )
+
+  # Check cache exists
+  if (!cache_dir(check_only = TRUE)) {
+    cli_abort(
+      "No ENMODS data has been downloaded. First try `renmods_update()`",
+      call = NULL
+    )
+  }
+  # Check we have all data and that it's up-to-date
+  purrr::walk(types, \(t) {
+    u <- check_cache(t)
+    if (u) renmods_update_(t)
+  })
 
   path <- cache_path(types)
 
@@ -48,8 +94,8 @@ renmods_connect <- function(date_range = NULL, types = "all") {
     dplyr::filter(
       # !! required because otherwise indexing [1] creates problems with the SQL commands
       # !! means evaluate right away and pass the output on
-      .data$Observed_Date_Time >= !!date_range[1],
-      .data$Observed_Date_Time <= !!date_range[2]
+      .data$Observed_Date_Time >= !!dates[1],
+      .data$Observed_Date_Time <= !!dates[2]
     )
 }
 
