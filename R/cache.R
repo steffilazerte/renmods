@@ -15,7 +15,7 @@
 cache_dir <- function() {
   path <- getOption(
     "renmods.cache_dir",
-    default = rappdirs::user_data_dir("renmods")
+    default = tools::R_user_dir("renmods", which = "data")
   ) |>
     normalizePath(mustWork = FALSE)
 
