@@ -9,7 +9,20 @@
 #' - https://en.wikipedia.org/wiki/Gzip#File_structure
 #' @noRd
 #' @examples
+#' extract_date_range(cache_path("this_yr"))
+#' extract_date_range(cache_path("yr_2_5"))
+#' extract_date_range(cache_path("yr_5_10"))
+#' extract_date_range(cache_path("historic"))
+#'
+#' extract_date_range(cache_path(c("this_yr", "historic")))
+
 extract_date_range <- function(path) {
+  # If multiple paths, recurse
+  if (length(path) > 1) {
+    dts <- purrr::map_chr(path, extract_date_range)
+    return(dts)
+  }
+
   con <- file(path, "rb")
   on.exit(close(con))
 
@@ -53,7 +66,8 @@ extract_date_range <- function(path) {
   # Extract date range from name
   date_range <- stringr::str_extract_all(name, "\\d{8}", simplify = TRUE) |>
     strptime("%Y%m%d", tz = "UTC") |>
-    as.Date()
+    as.Date() |>
+    dt_to_char()
 
   date_range
 }
@@ -71,14 +85,37 @@ char_to_dt <- function(dates) {
   as.Date(dt)
 }
 
+#' Title
+#'
+#' @param dates
+#'
+#' @returns
+#'
+#' @noRd
+#' @examples
+#' which_data_types(c("2026-01-01", "2026-01-15"))  # this_yr
+#' which_data_types(c("2024-12-10", "2024-12-15"))  # yr_2_5
+#' which_data_types(c("2021-12-10", "2021-12-15"))  # yr_5_10
+#' which_data_types(c("2010-01-01", "2010-01-15"))  # historic
+#'
+#' # Multiple ranges
+#' which_data_types(c("2024-12-10", "2025-01-15"))  # this_yr, yr_2_5
+
 which_data_types <- function(dates) {
-  cache_meta() |>
+  meta <- cache_meta() |>
     dplyr::mutate(
       in_range = purrr::map_lgl(.data$date_range, \(dt) {
-        dt <- char_to_dt(dt)
-        !(all(dt < dates) | all(dt > dates))
+        dates_data <- char_to_dt(dt)
+        !(dates_data[2] < dates[1] | dates_data[1] > dates[2])
       })
-    ) |>
+    )
+  if (!any(meta$in_range)) {
+    cli_abort(
+      "No data types cover this range of data ({dates}). See `cache_status()`. Do you need to update your data? See `renmods_update(\"this_yr\")`",
+      call = NULL
+    )
+  }
+  meta |>
     dplyr::filter(.data$in_range) |>
     dplyr::pull(.data$type)
 }
