@@ -60,13 +60,6 @@ renmods_connect <- function(dates = NULL, types = "all") {
     types <- renmods()$types
   }
 
-  cli_alert_info(
-    paste0(
-      "Connecting to {.val {types}} data",
-      if (!is.null(dates)) " for dates between {dates[1]} and {dates[2]}"
-    )
-  )
-
   # Check cache exists
   if (!cache_dir(check_only = TRUE)) {
     cli_abort(
@@ -74,6 +67,14 @@ renmods_connect <- function(dates = NULL, types = "all") {
       call = NULL
     )
   }
+
+  cli_alert_info(
+    paste0(
+      "Connecting to {.val {types}} data",
+      if (!is.null(dates)) " for dates between {dates[1]} and {dates[2]}"
+    )
+  )
+
   # Check we have all data and that it's up-to-date
   purrr::walk(types, \(t) {
     u <- check_cache(t)
