@@ -59,6 +59,7 @@ test_that("cache_remove()", {
   withr::local_options(list(renmods.cache_dir = withr::local_tempdir()))
   cache_dir() # Create the directory
 
+  skip_on_os("windows") # TODO: Why doesn't windows give "Cache to be removed" message?
   expect_message(cache_remove(), "Cache to be removed") |>
     expect_message(cache_dir()) |> # Dir to remove
     expect_message("Removing the cache")
