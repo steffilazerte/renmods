@@ -6,10 +6,16 @@ file.edit("DESCRIPTION")
 # Add changes to NEWS
 file.edit("NEWS.md")
 
-# Standard checks
+# Rebuild README
+devtools::build_readme()
+
+# Precompile Vignettes
+source("vignettes/articles/precompile.R")
+
+# Standard checks ------------------------------------------
 devtools::test() # Use Ctrl-Shift-T to test non-interactively
 devtools::run_examples()
-devtools::check()
+devtools::check() # Ctrl-Shift-E to check via Terminal
 
 # Additional quality checks -------------------------------
 
