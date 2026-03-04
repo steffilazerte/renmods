@@ -111,3 +111,28 @@ db_connect <- function() {
   check_db_httpsfs(con)
   con
 }
+
+#' Disconnect from the database
+#'
+#' @param tbl DuckDB tbl created with [renmods_connect()]
+#'
+#' @returns `NULL` invisibly. Called for side effect of disconnecting database.
+#'
+#' @export
+#' @examplesIf interactive()
+#' db <- renmods_connect()
+#' renmods_disconnect(db)
+
+renmods_disconnect <- function(tbl) {
+  if (!inherits(tbl, "tbl_duckdb_connection")) {
+    cli_abort(
+      "{.arg tbl} must be a `tbl_duckdb_connection` object from 
+      {.fn renmods_connect}",
+      call = NULL
+    )
+  }
+
+  con <- dbplyr::remote_con(tbl)
+  DBI::dbDisconnect(con, shutdown = TRUE)
+  invisible()
+}

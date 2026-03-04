@@ -28,7 +28,7 @@ test_that("renmods_connect() requires cached data", {
   expect_error(renmods_connect(), "No ENMODS data has been downloaded")
 })
 
-test_that("renmods_connect() works with cached data", {
+test_that("renmods_connect() & renmods_disconnect()", {
   skip_if_no_cache()
 
   expect_message(tbl <- renmods_connect(types = "historic"), "Connecting to") |>
@@ -39,6 +39,10 @@ test_that("renmods_connect() works with cached data", {
   cols <- colnames(tbl)
   expect_true("Location_ID" %in% cols)
   expect_true("Observed_Date_Time" %in% cols)
+
+  # Closes down the connection
+  expect_silent(renmods_disconnect(tbl))
+  expect_warning(renmods_disconnect(tbl), "Connection already closed")
 })
 
 test_that("renmods_connect() filters by date range", {
@@ -47,6 +51,8 @@ test_that("renmods_connect() filters by date range", {
   dates <- c("2010-01-01", "2010-01-31")
   expect_message(tbl <- renmods_connect(dates = dates)) |> suppressMessages()
   expect_s3_class(tbl, "tbl_duckdb_connection")
+
+  renmods_disconnect(tbl)
 })
 
 test_that("renmods_connect() works with specific types", {
@@ -55,6 +61,8 @@ test_that("renmods_connect() works with specific types", {
   expect_message(tbl <- renmods_connect(types = "this_yr")) |>
     suppressMessages()
   expect_s3_class(tbl, "tbl_duckdb_connection")
+
+  renmods_disconnect(tbl)
 })
 
 test_that("renmods_connect() works with multiple types", {
@@ -75,6 +83,8 @@ test_that("renmods_connect() works with multiple types", {
     expect_message("Last downloaded") |>
     expect_message("Last downloaded")
   expect_s3_class(tbl, "tbl_duckdb_connection")
+
+  renmods_disconnect(tbl)
 })
 
 test_that("renmods_connect() works with 'all' types", {
@@ -82,4 +92,6 @@ test_that("renmods_connect() works with 'all' types", {
 
   expect_message(tbl <- renmods_connect(types = "all")) |> suppressMessages()
   expect_s3_class(tbl, "tbl_duckdb_connection")
+
+  renmods_disconnect(tbl)
 })
