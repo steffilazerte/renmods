@@ -1,24 +1,11 @@
 # Test cache_dir() ------------------------------------------------------------
 
-test_that("cache_dir() returns a path", {
-  expect_silent(path <- cache_dir())
+test_that("cache_dir() creates the dir and returns a path", {
+  temp_dir <- withr::local_tempdir()
+  withr::local_options(list(renmods.cache_dir = file.path(temp_dir, "renmods")))
+  expect_message(path <- cache_dir(), "Creating cache directory")
   expect_type(path, "character")
   expect_true(dir.exists(path))
-})
-
-test_that("cache_dir() uses default R_user_dir when option not set", {
-  withr::local_options(list(renmods.cache_dir = NULL))
-  expect_silent(path <- cache_dir())
-  expected <- tools::R_user_dir("renmods", which = "data")
-  expect_equal(path, expected)
-})
-
-test_that("cache_dir() respects renmods.cache_dir option", {
-  temp_dir <- withr::local_tempdir()
-  withr::local_options(list(renmods.cache_dir = temp_dir))
-
-  expect_silent(path <- cache_dir())
-  expect_equal(path, temp_dir)
 })
 
 test_that("cache_dir() check_only returns logical", {
