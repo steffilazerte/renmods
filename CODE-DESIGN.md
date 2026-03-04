@@ -6,6 +6,7 @@
   downloaded `*.csv.gz`. Currently that is a date range for the file, which is how 
   we get the date ranges of different data sets. However, if the file names change this might break.
 - Note the custom `ask()` function which always returns `TRUE` if in a non-interactive session.
+- The `ask()` function also uses `rlang::is_interactive()` which works better with testthat (always assumes 'FALSE' in tests)
 - Current data types are: `this_yr`, `yr_2_5`, `yr_5_10`, `historic`
     - If these change, modify `zzz.R` - `renmods.urls` option and types in `renmods()$types`
 
