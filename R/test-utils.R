@@ -24,7 +24,9 @@ skip_if_no_cache <- function() {
   has_data <- any(!is.na(status$path) & file.exists(status$path))
 
   if (!has_data) {
-    skip("No cached data available. Run renmods_update() to download data.")
+    testthat::skip(
+      "No cached data available. Run renmods_update() to download data."
+    )
   }
 }
 
