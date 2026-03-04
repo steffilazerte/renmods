@@ -27,6 +27,7 @@ test_that("char_to_dt() handles single date by adding default start", {
 # Test ask() -------------------------------------------------------------------
 
 test_that("ask() returns TRUE in non-interactive mode", {
+  skip_if(interactive(), "Only tests in non-interactive mode")
   # ask() should return TRUE when not interactive
   withr::local_options(list(rlang_interactive = FALSE))
   expect_true(ask("Test message", "No ask message"))

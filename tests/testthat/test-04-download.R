@@ -40,7 +40,8 @@ test_that("renmods_update() respects force argument", {
     cli_alert_success("Mocked download for {type}")
   })
 
-  expect_message(renmods_update("this_yr", force = TRUE), "Mocked download")
+  expect_message(renmods_update("this_yr", force = TRUE), "Forcing update") |>
+    expect_message("Mocked download")
 })
 
 
