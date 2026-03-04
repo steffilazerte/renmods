@@ -27,7 +27,6 @@ test_that("cache_dir() check_only returns logical", {
   expect_true(result)
 })
 
-
 # Test cache_path() ------------------------------------------------------------
 
 test_that("cache_path() returns correct file paths", {
@@ -66,4 +65,14 @@ test_that("cache_status()", {
     c("type", "last_downloaded", "date_range", "renmods_version", "path"),
     ignore.order = TRUE
   )
+})
+
+# Test cache_remove() -------------------------------------------
+test_that("cache_remove()", {
+  withr::local_options(list(renmods.cache_dir = withr::local_tempdir()))
+  cache_dir() # Create the directory
+
+  expect_message(cache_remove(), "Cache to be removed") |>
+    expect_message(cache_dir()) |> # Dir to remove
+    expect_message("Removing the cache")
 })
