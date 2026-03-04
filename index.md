@@ -18,9 +18,18 @@ Columbia](https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61
 
 ### Installation
 
+``` r
+# install.packages("pak") # if not already installed
+
+library(pak)
+pkg_install("bcgov/renmods")
+```
+
 ### Usage
 
-See the Getting Started Tutorial for details
+See the [Get
+Started](https://steffilazerte.github.io/renmods/articles/renmods.html)
+tutorial for details
 
 ### Project Status
 
@@ -40,6 +49,18 @@ guidelines.
 Please note that this project is released with a [Contributor Code of
 Conduct](http://steffilazerte.ca/renmods/CODE_OF_CONDUCT.md). By
 participating in this project you agree to abide by its terms.
+
+## Code Coverage
+
+``` R
+#> renmods Coverage: 83.22%
+#> R/checks.R: 72.46%
+#> R/cache.R: 79.73%
+#> R/db.R: 86.27%
+#> R/utils.R: 89.04%
+#> R/download.R: 100.00%
+#> R/zzz.R: 100.00%
+```
 
 ### License
 
