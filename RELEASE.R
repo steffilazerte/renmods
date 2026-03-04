@@ -11,8 +11,16 @@ devtools::test() # Use Ctrl-Shift-T to test non-interactively
 devtools::run_examples()
 devtools::check()
 
-# Additional quality checks
-goodpractice::gp() # Checks for good practices
+# Additional quality checks -------------------------------
+
+# Checks for good practices, but not code coverage
+goodpractice::gp(checks = all_checks()[all_checks() != "cov"])
+
+# Create local code coverage report
+covr::report(
+  covr::package_coverage(function_exclusions = c("\\.onLoad", "^skip")),
+  file = "covr/cov_report.html",
+)
 spelling::spell_check_package() # Check spelling in docs
 urlchecker::url_check() # Check URLs in documentation
 
