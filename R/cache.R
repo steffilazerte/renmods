@@ -80,9 +80,9 @@ cache_meta <- function(types = renmods()$types, update = FALSE) {
   path <- file.path(cache_dir(), "metadata.csv")
 
   if (file.exists(path)) {
-    meta <- read.csv(path)
+    meta <- utils::read.csv(path)
     meta[!file.exists(meta$path), ] <- meta_blank[!file.exists(meta$path), ]
-    write.csv(meta, path, row.names = FALSE) # Update any missing files
+    utils::write.csv(meta, path, row.names = FALSE) # Update any missing files
   } else {
     meta <- meta_blank
   }
@@ -99,12 +99,12 @@ cache_meta <- function(types = renmods()$types, update = FALSE) {
         type = types,
         last_downloaded = as.character(round(Sys.time())),
         date_range = dates,
-        renmods_version = as.character(packageVersion("renmods")),
+        renmods_version = as.character(utils::packageVersion("renmods")),
         path = f
       ),
       by = "type"
     )
-    write.csv(meta, path, row.names = FALSE)
+    utils::write.csv(meta, path, row.names = FALSE)
   } else {
     if (!is.null(types)) {
       meta <- dplyr::filter(meta, .data$type %in% .env$types)

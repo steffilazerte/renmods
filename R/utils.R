@@ -128,7 +128,7 @@ ask <- function(msg, no_ask = NULL, call = rlang::caller_env()) {
     go <- isTRUE(go)
   } else {
     go <- TRUE
-    cli_alert_info(no_ask)
+    cli_alert_info(no_ask, .envir = call)
   }
   go
 }

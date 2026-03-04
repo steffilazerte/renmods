@@ -3,7 +3,7 @@ file.exists <- NULL
 
 skip_if_no_cache <- function() {
   if (!cache_dir(check_only = TRUE)) {
-    skip("No cache directory exists")
+    testthat::skip("No cache directory exists")
   }
 
   status <- cache_status()
@@ -19,7 +19,7 @@ skip_if_no_type <- function(type) {
 
   path <- cache_path(type)
   if (!file.exists(path)) {
-    skip(paste0(
+    testthat::skip(paste0(
       "No cached data for type '",
       type,
       "'. Run renmods_update('",

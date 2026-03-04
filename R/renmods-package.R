@@ -26,5 +26,8 @@
 #'
 
 ## usethis namespace: start
+#' @import cli
+#' @importFrom rlang .data
+#' @importFrom rlang .env
 ## usethis namespace: end
 NULL
