@@ -28,6 +28,21 @@
   options(opts[!names(opts) %in% names(options())])
 }
 
+#' Get package constants
+#'
+#' Returns a list of package-level constants including data types and
+#' update intervals.
+#'
+#' @returns Named list with:
+#' - `types`: Character vector of data types
+#' - `update`: Named numeric vector of update intervals in weeks
+#'
+#' @noRd
+#' @examples
+#' renmods()
+#' renmods()$types
+#' renmods()$update
+
 renmods <- function() {
   types <- c("this_yr", "yr_2_5", "yr_5_10", "historic")
 

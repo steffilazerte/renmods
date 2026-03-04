@@ -12,6 +12,21 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+#' Validate and normalize data type arguments
+#'
+#' Checks that data types are valid and expands "all" to a vector of all data
+#' types.
+#'
+#' @param types Character. Data types to validate.
+#'
+#' @returns Character vector. Validated data types.
+#'
+#' @noRd
+#' @examples
+#' check_types("this_yr")
+#' check_types("all")
+#' check_types(c("this_yr", "yr_2_5"))
+
 check_types <- function(types) {
   t <- renmods()$types
 
@@ -72,6 +87,21 @@ check_dates <- function(dates, range = FALSE) {
   dates
 }
 
+#' Check if cache needs updating
+#'
+#' Determines whether cached data needs to be updated based on existence,
+#' age, and force parameter.
+#'
+#' @param type Character. Single data type to check.
+#' @param force Logical. If `TRUE`, forces update regardless of cache status.
+#'
+#' @returns Logical. `TRUE` if data should be updated, `FALSE` otherwise.
+#'
+#' @noRd
+#' @examples
+#' check_cache("this_yr")
+#' check_cache("this_yr", force = TRUE)
+
 check_cache <- function(type, force = FALSE) {
   update <- FALSE
 
@@ -88,11 +118,13 @@ check_cache <- function(type, force = FALSE) {
   update
 }
 
+#' Check if cache needs updating
 #'
+#' Internal function to determine if cached needs updating.
 #'
-#' @param type
+#' @param type Character. Data type to check.
 #'
-#' @returns
+#' @returns Logical. `TRUE` if data needs updating, `FALSE` otherwise.
 #'
 #' @noRd
 #' @examples
@@ -119,6 +151,20 @@ check_time_to_update <- function(type) {
   }
   update
 }
+
+#' Check and install DuckDB httpfs extension
+#'
+#' Verifies that the httpfs extension is available in DuckDB and prompts
+#' to install it if missing. This extension is required to read CSV files.
+#'
+#' @param con DuckDB connection object.
+#'
+#' @returns DuckDB connection object (invisibly).
+#'
+#' @noRd
+#' @examples
+#' con <- DBI::dbConnect(duckdb::duckdb())
+#' check_db_httpsfs(con)
 
 check_db_httpsfs <- function(con) {
   con <- tryCatch(DBI::dbExecute(con, "LOAD httpfs"), error = \(e) {

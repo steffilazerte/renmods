@@ -1,8 +1,12 @@
-#' Title
+#' Extract date range from gzip file metadata
 #'
-#' @param path
+#' Reads the gzip file header to extract the original filename, then parses
+#' the date range from the filename (expected format: YYYYMMDD).
 #'
-#' @returns
+#' @param path Character. Path(s) to gzip file(s).
+#'
+#' @returns Character. Date range in format "YYYY-MM-DD to YYYY-MM-DD" or
+#'   character vector if multiple paths provided.
 #'
 #' @references
 #' - https://www.rfc-editor.org/rfc/rfc1952.html#page-5
@@ -72,10 +76,37 @@ extract_date_range <- function(path) {
   date_range
 }
 
+#' Convert date vector to character range
+#'
+#' Converts a two-element date vector into a single character string
+#' formatted as "YYYY-MM-DD to YYYY-MM-DD".
+#'
+#' @param dates Date vector of length 2.
+#'
+#' @returns Character. Date range as single string.
+#'
+#' @noRd
+#' @examples
+#' dt_to_char(as.Date(c("2024-01-01", "2024-12-31")))
 
 dt_to_char <- function(dates) {
   paste0(dates, collapse = " to ")
 }
+
+#' Convert character range to date vector
+#'
+#' Parses a character string formatted as "YYYY-MM-DD to YYYY-MM-DD" into
+#' a two-element date vector. If only one date is provided, assumes start
+#' date of 1900-01-01.
+#'
+#' @param dates Character. Date range as single string.
+#'
+#' @returns Date vector of length 2.
+#'
+#' @noRd
+#' @examples
+#' char_to_dt("2024-01-01 to 2024-12-31")
+#' char_to_dt("2024-12-31")
 
 char_to_dt <- function(dates) {
   dt <- stringr::str_split_1(dates, " to ")
@@ -85,11 +116,14 @@ char_to_dt <- function(dates) {
   as.Date(dt)
 }
 
-#' Title
+#' Determine which data types cover a date range
 #'
-#' @param dates
+#' Queries cache metadata to find which data types (this_yr, yr_2_5, yr_5_10,
+#' historic) contain data overlapping with the requested date range.
 #'
-#' @returns
+#' @param dates Date or character vector of length 2. Start and end dates.
+#'
+#' @returns Character vector. Data types that overlap with the date range.
 #'
 #' @noRd
 #' @examples
@@ -120,6 +154,24 @@ which_data_types <- function(dates) {
     dplyr::pull(.data$type)
 }
 
+#' Prompt user for confirmation in interactive mode
+#'
+#' Displays a warning message and prompts for yes/no confirmation in
+#' interactive sessions. In non-interactive mode, automatically proceeds
+#' with action and displays info message.
+#'
+#' @param msg Character. Question/Query to display (used as prompt).
+#' @param no_ask Character. Message to display in non-interactive mode.
+#' @param call Environment. Calling environment for message interpolation.
+#'   Allows use of `{variable}` in cli messages where the variable comes from
+#'   the calling environment.
+#'
+#' @returns Logical. `TRUE` if user confirmed or non-interactive, `FALSE` if
+#'   user declined.
+#'
+#' @noRd
+#' @examples
+#' ask("Continue?", "Continuing automatically")
 
 ask <- function(msg, no_ask = NULL, call = rlang::caller_env()) {
   if (interactive()) {
@@ -135,7 +187,7 @@ ask <- function(msg, no_ask = NULL, call = rlang::caller_env()) {
 
 #' Reads/Creates metadata table
 #'
-#' @returns
+#' @returns Tibble of metadata
 #'
 #' @noRd
 #' @examples
@@ -161,6 +213,13 @@ read_meta <- function() {
   meta
 }
 
+#' Write metadata to file
+#'
+#' @param meta Data frame to write
+#'
+#' @returns `NULL` invisibly. Called for side effect of saving data.
+#'
+#' @noRd
 write_meta <- function(meta) {
   path <- file.path(cache_dir(), "metadata.csv")
   utils::write.csv(meta, path, row.names = FALSE)

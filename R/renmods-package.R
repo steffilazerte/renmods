@@ -15,15 +15,34 @@
 #' @keywords internal
 "_PACKAGE"
 
-#' @section Package options
+#' @section Package options:
 #'
-#' The following options can be set by the user
+#' The following options control package behavior:
 #'
-#' - `renmods.cache_dir` - Path to cache folder to user.
-#' - `renmods.urls_current` - Named character vector of data download urls.
-#'     Contains `current`, `yr_2_5`, `yr_5_10` and `historic`. URLs are provided
-#'     but can be overridden.
+#' \describe{
+#'   \item{\code{renmods.cache_dir}}{Directory for caching downloaded data.
+#'     Default: \code{NULL} (uses \code{tools::R_user_dir("renmods", "cache")}).
+#'     Set to a custom path to override default location.}
+#'   \item{\code{renmods.urls}}{Named list of URLs for ENMODS data sources.
+#'     Contains: \code{this_yr}, \code{yr_2_5}, \code{yr_5_10}, and
+#'     \code{historic}. URLs are provided by default but can be overridden.}
+#' }
 #'
+#' Set options using \code{options()}, for example:
+#' \preformatted{
+#' options(renmods.cache_dir = "~/.renmods_cache")
+#' }
+#'
+#' @section Data types:
+#'
+#' The package provides access to four data types covering different time periods:
+#'
+#' \describe{
+#'   \item{\code{this_yr}}{Current year data (updates weekly)}
+#'   \item{\code{yr_2_5}}{Data from 2-5 years ago (updates every 26 weeks)}
+#'   \item{\code{yr_5_10}}{Data from 5-10 years ago (updates every 26 weeks)}
+#'   \item{\code{historic}}{Data older than 10 years (updates every 26 weeks)}
+#' }
 
 ## usethis namespace: start
 #' @import cli

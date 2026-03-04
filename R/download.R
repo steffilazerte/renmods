@@ -12,16 +12,30 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-#' Title
+#' Update cached ENMODS data
 #'
-#' @param types
+#' Downloads ENMODS data from BC Gov and saves to the local cache.
+#' By default, only missing or outdated data is downloaded.
 #'
-#' @returns
+#' @param types Character. Which data types to update. One or more of
+#'   "this_yr", "yr_2_5", "yr_5_10", "historic", or "all" (default "this_yr").
+#' @param force Logical. If `TRUE`, downloads data even if cache is up-to-date
+#'   (default `FALSE`).
+#'
+#' @returns `NULL` invisibly. Called for side effect of downloading data.
 #'
 #' @export
-#' @examplesIf interactive()
+#' @examples
+#' \dontrun{
+#' # Update current year data
 #' renmods_update()
+#'
+#' # Update all data types
 #' renmods_update("all")
+#'
+#' # Force update of specific types
+#' renmods_update(c("this_yr", "yr_2_5"), force = TRUE)
+#' }
 
 renmods_update <- function(types = "this_yr", force = FALSE) {
   types <- check_types(types)
@@ -44,6 +58,20 @@ renmods_update <- function(types = "this_yr", force = FALSE) {
   }
 }
 
+#' Internal function to download data
+#'
+#' Downloads a single data type from ENMODS and updates cache metadata.
+#' This is the internal worker function called by `renmods_update()`.
+#'
+#' @param type Character. Single data type to download.
+#'
+#' @returns `NULL` invisibly. Called for side effect of downloading data.
+#'
+#' @noRd
+#' @examples
+#' \dontrun{
+#'   renmods_update_("this_yr")
+#' }
 
 renmods_update_ <- function(type) {
   path <- cache_path(type)

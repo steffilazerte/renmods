@@ -12,14 +12,24 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-#' Title
+#' Get or create cache directory
 #'
-#' @param check_only
+#' Returns the path to the renmods cache directory. By default, creates the
+#' directory if it doesn't exist (with user confirmation in interactive mode).
+#' The cache location can be customized via the `renmods.cache_dir` option.
 #'
-#' @returns
+#' @param check_only Logical. If `TRUE`, only checks if cache directory exists
+#'   without creating it or prompting user.
+#'
+#' @returns Character. Path to cache directory (when `check_only = FALSE`) or
+#'   logical indicating if cache exists (when `check_only = TRUE`).
 #'
 #' @export
 #' @examples
+#' cache_dir(check_only = TRUE)
+#' \dontrun{
+#' cache_dir()
+#' }
 cache_dir <- function(check_only = FALSE) {
   path <- getOption(
     "renmods.cache_dir",
@@ -47,6 +57,20 @@ cache_dir <- function(check_only = FALSE) {
   path
 }
 
+#' Get cache file paths for data types
+#'
+#' Returns the full file paths for where ENMODS data files would be cached. Note
+#' they do not have to exist.
+#'
+#' @param types Character. Data types to get paths for.
+#'
+#' @returns Character vector. Full file paths to cached data files.
+#'
+#' @noRd
+#' @examples
+#' cache_path("this_yr")
+#' cache_path(c("this_yr", "yr_2_5"))
+
 cache_path <- function(types) {
   types <- check_types(types)
   path <- file.path(cache_dir(), paste0(types, ".csv.gz"))
@@ -61,9 +85,13 @@ cache_path <- function(types) {
 #'
 #' @param types Character. Types of ENMODS data to check.
 #' @param update Logical. Whether or not to update the metadata (assumes data
-#' has just been downloaded).
+#'   has just been downloaded).
+#' @param reset Logical. Whether to reset the metadata for a data type to blank.
+#'   Useful for just before when downloading, to ensure if the download is
+#'   cancelled, that the metadata correctly records the data status as missing.
 #'
-#' @returns
+#' @returns Data frame with cache metadata (type, last_downloaded, date_range,
+#'   renmods_version, path).
 #'
 #' @noRd
 #' @examples
@@ -106,9 +134,21 @@ cache_meta <- function(types = renmods()$types, update = FALSE, reset = FALSE) {
 
 #' View cache status
 #'
+#' Returns information about cached ENMODS data including when each data type
+#' was last downloaded, the date range it covers, and the file path.
+#'
+#' @returns Data frame with columns:
+#' - `type`: Data type (this_yr, yr_2_5, yr_5_10, historic)
+#' - `last_downloaded`: Date/time of last download
+#' - `date_range`: Date range covered by the data
+#' - `renmods_version`: Package version used to download data
+#' - `path`: File path to cached data
+#'
 #' @export
 #' @examples
+#' # View status of all cached data
 #' cache_status()
+
 cache_status <- function() {
   if (cache_dir(check_only = TRUE)) {
     cache_meta()
@@ -117,20 +157,29 @@ cache_status <- function() {
   }
 }
 
-#' Title
+#' Remove cached data
 #'
-#' @param types
+#' Deletes cached ENMODS data files. Use with caution as this will require
+#' re-downloading data. In interactive mode, prompts for confirmation before
+#' deletion.
 #'
-#' @returns
+#' @param types Character. Which data types to remove. Either "all" (default)
+#'   to remove all cached data and the cache directory, or one or more of
+#'   "this_yr", "yr_2_5", "yr_5_10", "historic".
+#'
+#' @returns `TRUE` invisibly.
 #'
 #' @export
 #' @examples
 #' \dontrun{
-#' # Remove everything including the directory
+#' # Remove all cached data
 #' cache_remove()
 #'
 #' # Remove specific data types
 #' cache_remove(types = c("this_yr", "yr_2_5"))
+#'
+#' # Remove just historic data
+#' cache_remove(types = "historic")
 #' }
 cache_remove <- function(types = "all") {
   if (!cache_dir(check_only = TRUE)) {

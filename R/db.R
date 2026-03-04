@@ -12,43 +12,55 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-#' Connect to the RENMODS data
+#' Connect to ENMODS data via DuckDB
 #'
-#' Connect to the RENMODS data via Duck DB. Can prefilter the data by either a
-#' date range (`dates`) or data types (`types`). `dates` take precedence if both
-#' are supplied. Use dplyr's `collect()` function to read in the final data from
-#' the connection. The fewer data sources connected to and the smaller the
-#' dataset, the quicker the `collect()` function will run.
+#' Creates a DuckDB connection to cached ENMODS data. The database table can be
+#' filtered using dplyr before collecting into a data frame with `collect()`.
+#' Using `dates` (date range) or `types` (data types) prefilters the data to a
+#' specific date range or specific data file. But if both are supplied, `dates`
+#' takes precedence. Only the data files required will be connected to and the
+#' fewer data sources connected to and the smaller the dataset, the quicker the
+#' `collect()` function will run.
 #'
-#' @param dates Character/Dates vector. Start and end dates for filtering data.
-#' @param types Character. Type of data to read. One of "all", "this_yr",
-#' "yr_2_5", "yr_5_10", or "historical".
+#' @param dates Character or Date vector of length 2. Start and end dates for
+#'   filtering data ("YYYY-MM-DD").
+#' @param types Character. Data types to connect to. One or more of
+#'   "this_yr", "yr_2_5", "yr_5_10", "historic", or "all" (default "all").
+#'   Ignored if `dates` is specified.
 #'
-#' @returns
+#' @returns A `tbl_duckdb_connection` object - a lazy DuckDB table. Use dplyr
+#'   functions to filter/select, then `collect()` to load into R memory.
 #'
 #' @export
-#' @examples
-#' library(dplyr)
-#'
+#' @examplesIf interactive()
 #' # All data
 #' db <- renmods_connect()
 #'
 #' # All current data
 #' db <- renmods_connect(types = "this_yr")
 #'
-#' # Use a date range to specify the data
-#' db <- renmods_connect(c("2025-01-01", "2025-02-01"))
-#' colnames(db) # Get a list of Column names
-#' glimpse(db)  # Quick look at the Columns and data
+#' # Connect only to data types required for a specific date range
+#' db <- renmods_connect(dates = c("2025-01-01", "2025-02-01"))
 #'
-#' db |>
+#' # Use dplyr to manipulate the data
+#' library(dplyr)
+#'
+#' # Explore the data and column names
+#' colnames(db)
+#' glimpse(db)
+#'
+#' # Filter and collect specific data
+#' df <- db |>
 #'   filter(Location_ID %in% c("E327371", "E300230")) |>
 #'   select(
 #'     "Location_ID", "Location_Name", "Observed_Date_Time",
 #'     "Observed_Property_Name", "Result_Value", "Result_Unit",
 #'     "Analysis_Method_ID"
 #'   ) |>
-#' collect()
+#'   collect()
+#'
+#' # Remember to shut down the connection when you're done
+#' renmods_disconnect()
 
 renmods_connect <- function(dates = NULL, types = "all") {
   if (!is.null(dates)) {
@@ -99,6 +111,18 @@ renmods_connect <- function(dates = NULL, types = "all") {
       .data$Observed_Date_Time <= !!dates[2]
     )
 }
+
+#' Create general DuckDB connection with proper configuration
+#'
+#' Establishes a general DuckDB connection with autoinstall and autoload of
+#' extensions enabled, and checks for httpfs extension availability.
+#' Note that it is not currently connected to any files.
+#'
+#' @returns DuckDB connection object.
+#'
+#' @noRd
+#' @examples
+#' con <- db_connect()
 
 db_connect <- function() {
   con <- DBI::dbConnect(
