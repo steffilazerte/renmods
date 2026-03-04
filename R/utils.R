@@ -12,7 +12,7 @@
 #' - https://www.rfc-editor.org/rfc/rfc1952.html#page-5
 #' - https://en.wikipedia.org/wiki/Gzip#File_structure
 #' @noRd
-#' @examples
+#' @examplesIf interactive()
 #' extract_date_range(cache_path("this_yr"))
 #' extract_date_range(cache_path("yr_2_5"))
 #' extract_date_range(cache_path("yr_5_10"))
@@ -174,7 +174,7 @@ which_data_types <- function(dates) {
 #' ask("Continue?", "Continuing automatically")
 
 ask <- function(msg, no_ask = NULL, call = rlang::caller_env()) {
-  if (interactive()) {
+  if (rlang::is_interactive()) {
     cli_alert_warning(msg, .envir = call)
     go <- utils::askYesNo(msg = "", default = TRUE)
     go <- isTRUE(go)
