@@ -1,14 +1,14 @@
 # Test db_connect() ------------------------------------------------------------
 test_that("db_connect() creates a DuckDB connection with extensions", {
   # Local installs expected to already have extension, but CI will not
-  skip_if_local()
+  skip_on_local()
   expect_message(con <- db_connect(), "Installing DuckDB extension")
   expect_s4_class(con, "duckdb_connection")
   DBI::dbDisconnect(con)
 })
 
 test_that("db_connect() creates a DuckDB connection", {
-  skip_if_ci() # Local install expect no messages
+  skip_on_ci() # Local install expect no messages
   expect_silent(con <- db_connect())
   expect_s4_class(con, "duckdb_connection")
   DBI::dbDisconnect(con)

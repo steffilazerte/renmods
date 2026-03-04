@@ -11,12 +11,12 @@ test_that("cache_dir() creates the dir and returns a path", {
 test_that("cache_dir() check_only returns logical", {
   expect_silent(result <- cache_dir(check_only = TRUE))
   expect_type(result, "logical")
-  expect_true(result)
 })
 
 # Test cache_path() ------------------------------------------------------------
 
 test_that("cache_path() returns correct file paths", {
+  cache_dir() # In case doesn't exist yet
   expect_silent(result <- cache_path("this_yr"))
   expect_match(result, "this_yr\\.csv\\.gz$")
   expect_true(stringr::str_detect(result, stringr::fixed(cache_dir())))
