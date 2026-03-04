@@ -7,7 +7,7 @@ file.edit("DESCRIPTION")
 file.edit("NEWS.md")
 
 # Standard checks
-devtools::test()
+devtools::test() # Use Ctrl-Shift-T to test non-interactively
 devtools::run_examples()
 devtools::check()
 

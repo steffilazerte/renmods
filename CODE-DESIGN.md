@@ -30,6 +30,7 @@ The workflow is hopefully very simple:
 - `renmods_update()` - Download and cache data locally
 - `renmods_connect()` - Connect to *.csv.gz files
 - `collect()` - Retrieve data to R data.frame/tibble (reexported from dplyr)
+- `renmods_disconnect()` - Disconnect from the data base
 
 There are also a family of `cache_xxx()` functions for controlling the cache.
 
@@ -54,7 +55,7 @@ There are also a family of `cache_xxx()` functions for controlling the cache.
   - `cache_status()` (returns data frame of cached files, download dates, date ranges, and file paths)
   - `cache_remove()` (remove parts or whole of cache)
 - `cache_path()` and `cache_meta()` are internal
-  - `cache_meta()` is very similar to `cache_status()` but is also used to update the cache.
+  - `cache_meta()` is very similar to `cache_status()` but is also used to update/reset the cache metadata.
   - `cache_meta()` uses `extract_date_range()` to pull the original file name from the 
   downloaded `*.csv.gz`. Currently that is a date range for the file, but if the file names change this might break.
 - Cache functions are meant to check for cache, create cache and prompt updates as needed. 

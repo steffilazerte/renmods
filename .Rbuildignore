@@ -5,3 +5,5 @@
 ^CODE_OF_CONDUCT\.md$
 ^\.vscode$
 ^[.]?air[.]toml$
+^CODE-DESIGN\.md$
+^RELEASE\.R$
