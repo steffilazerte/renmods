@@ -56,6 +56,6 @@ df <- db |>
   collect()
 
 # Remember to shut down the connection when you're done
-renmods_disconnect()
+renmods_disconnect(db)
 \dontshow{\}) # examplesIf}
 }

@@ -60,7 +60,7 @@
 #'   collect()
 #'
 #' # Remember to shut down the connection when you're done
-#' renmods_disconnect()
+#' renmods_disconnect(db)
 
 renmods_connect <- function(dates = NULL, types = "all") {
   if (!is.null(dates)) {
