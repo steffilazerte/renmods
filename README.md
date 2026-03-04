@@ -5,6 +5,8 @@
 
 [![img](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 [![R-CMD-check](https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml)
+[![Code Coverage:
+83%](https://img.shields.io/badge/code_coverage-83%25-green)](#code-coverage)
 <!-- badges: end -->
 
 # renmods
@@ -27,9 +29,18 @@ Columbia](https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61
 
 ### Installation
 
+``` r
+# install.packages("pak") # if not already installed
+
+library(pak)
+pkg_install("bcgov/renmods")
+```
+
 ### Usage
 
-See the Getting Started Tutorial for details
+See the [Get
+Started](https://steffilazerte.github.io/renmods/articles/renmods.html)
+tutorial for details
 
 ### Project Status
 
@@ -48,6 +59,16 @@ If you would like to contribute to the package, please see our
 Please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
 to abide by its terms.
+
+## Code Coverage
+
+    #> renmods Coverage: 83.22%
+    #> R/checks.R: 72.46%
+    #> R/cache.R: 79.73%
+    #> R/db.R: 86.27%
+    #> R/utils.R: 89.04%
+    #> R/download.R: 100.00%
+    #> R/zzz.R: 100.00%
 
 ### License
 

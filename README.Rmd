@@ -7,20 +7,28 @@ editor_options:
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<!-- badges: start -->
-[![img](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
-[![R-CMD-check](https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml)
-<!-- badges: end -->
-
 ```{r, echo = FALSE, message=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "fig/README-"
 )
-# library(rems)
-# remove_data_cache("all")
+
+library(covr)
+coverage_detail <- package_coverage(
+  function_exclusions = c("\\.onLoad", "^skip")
+)
+coverage <- percent_coverage(coverage_detail) |>
+  round(0)
 ```
+
+
+<!-- badges: start -->
+[![img](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
+[![R-CMD-check](https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml)
+[![Code Coverage: `r coverage`%](https://img.shields.io/badge/code_coverage-`r coverage`%25-green)](#code-coverage)
+<!-- badges: end -->
+
 
 # renmods
 
@@ -35,7 +43,8 @@ The EnMoDs dataset is licensed under the [Open Government Licence - British Colu
 
 ### Installation
 
-```{r install, echo = FALSE, message=FALSE}
+```{r install}
+#| eval: false
 # install.packages("pak") # if not already installed
 
 library(pak)
@@ -44,7 +53,7 @@ pkg_install("bcgov/renmods")
 
 ### Usage
 
-See the Get Started Tutorial for details
+See the [Get Started](https://steffilazerte.github.io/renmods/articles/renmods.html) tutorial for details
 
 
 ### Project Status
@@ -61,6 +70,14 @@ If you would like to contribute to the package, please see our
 [CONTRIBUTING](CONTRIBUTING.md) guidelines.
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+## Code Coverage
+
+```{r codecov, echo=FALSE}
+# Non-third party coverage idea from Adam H. Sparks
+# https://codeberg.org/adamhsparks/epicrop/src/commit/86b79211bfaf4cd51646f23e0ae9a361f23c34e2/README.Rmd#L12
+coverage_detail
+```
 
 ### License
 

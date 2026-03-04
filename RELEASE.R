@@ -22,7 +22,7 @@ devtools::check() # Ctrl-Shift-E to check via Terminal
 # Checks for good practices, but not code coverage
 goodpractice::gp(checks = all_checks()[all_checks() != "cov"])
 
-# Create local code coverage report
+# Create local code coverage report for detailed exploration
 covr::report(
   covr::package_coverage(function_exclusions = c("\\.onLoad", "^skip")),
   file = "covr/cov_report.html",
