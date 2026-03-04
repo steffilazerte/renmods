@@ -10,7 +10,7 @@ test_that("cache_dir() uses default R_user_dir when option not set", {
   withr::local_options(list(renmods.cache_dir = NULL))
   expect_silent(path <- cache_dir())
   expected <- tools::R_user_dir("renmods", which = "data")
-  expect_equal(normalizePath(path), normalizePath(expected))
+  expect_equal(path, expected)
 })
 
 test_that("cache_dir() respects renmods.cache_dir option", {
@@ -18,7 +18,7 @@ test_that("cache_dir() respects renmods.cache_dir option", {
   withr::local_options(list(renmods.cache_dir = temp_dir))
 
   expect_silent(path <- cache_dir())
-  expect_equal(normalizePath(path), normalizePath(temp_dir))
+  expect_equal(path, temp_dir)
 })
 
 test_that("cache_dir() check_only returns logical", {

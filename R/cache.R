@@ -47,7 +47,7 @@ cache_dir <- function(check_only = FALSE) {
       "Creating cache directory {path}"
     )
     if (create) {
-      created <- dir.create(path)
+      created <- dir.create(path, recursive = TRUE)
       if (created) cli_alert_success("Successfully created cache directory")
     } else {
       cli_abort("Cannot continue without a cache dir", call = NULL)
