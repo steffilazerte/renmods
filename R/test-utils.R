@@ -60,3 +60,7 @@ skip_if_no_type <- function(type) {
     ))
   }
 }
+
+skip_if_local <- function() {
+  skip_if(!isTRUE(as.logical(Sys.getenv("CI", "false"))), "Not on CI")
+}
