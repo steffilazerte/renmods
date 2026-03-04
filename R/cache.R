@@ -68,23 +68,15 @@ cache_path <- function(types) {
 #' @noRd
 #' @examples
 #' cache_meta()
-cache_meta <- function(types = renmods()$types, update = FALSE) {
-  meta_blank <- data.frame(
-    type = renmods()$types,
-    last_downloaded = NA_character_,
-    date_range = NA_character_,
-    renmods_version = NA_character_,
-    path = NA_character_
-  )
 
-  path <- file.path(cache_dir(), "metadata.csv")
+cache_meta <- function(types = renmods()$types, update = FALSE, reset = FALSE) {
+  meta <- read_meta()
 
-  if (file.exists(path)) {
-    meta <- utils::read.csv(path)
-    meta[!file.exists(meta$path), ] <- meta_blank[!file.exists(meta$path), ]
-    utils::write.csv(meta, path, row.names = FALSE) # Update any missing files
-  } else {
-    meta <- meta_blank
+  if (!update && !reset) {
+    if (!is.null(types)) {
+      meta <- dplyr::filter(meta, .data$type %in% .env$types)
+    }
+    return(meta)
   }
 
   if (update) {
@@ -95,7 +87,7 @@ cache_meta <- function(types = renmods()$types, update = FALSE) {
 
     meta <- dplyr::rows_upsert(
       meta,
-      data.frame(
+      dplyr::tibble(
         type = types,
         last_downloaded = as.character(round(Sys.time())),
         date_range = dates,
@@ -104,18 +96,15 @@ cache_meta <- function(types = renmods()$types, update = FALSE) {
       ),
       by = "type"
     )
-    utils::write.csv(meta, path, row.names = FALSE)
-  } else {
-    if (!is.null(types)) {
-      meta <- dplyr::filter(meta, .data$type %in% .env$types)
-    }
-    return(meta)
+  } else if (reset) {
+    meta <- dplyr::rows_upsert(meta, meta_blank(types), by = "type")
   }
+
+  write_meta(meta)
 }
 
-#' Cache Status
-#'
-#' @returns
+
+#' View cache status
 #'
 #' @export
 #' @examples

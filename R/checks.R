@@ -98,8 +98,13 @@ check_cache <- function(type, force = FALSE) {
 #' @examples
 #' check_time_to_update("this_yr")
 check_time_to_update <- function(type) {
-  # This function should only be called if the data already exists
   d <- cache_meta(types = type)$last_downloaded
+
+  if (is.na(d)) {
+    # Always update if no data
+    return(TRUE)
+  }
+
   w <- renmods()$update[type]
   diff <- difftime(Sys.time(), d, units = "weeks")
   update <- diff > renmods()$update[type]

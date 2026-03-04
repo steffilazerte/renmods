@@ -53,6 +53,9 @@ renmods_update_ <- function(type) {
   cli_alert("Downloading '{type}' data from ENMODS")
   cli_alert_info("Saving to cache: {path}")
 
+  # Remove file from metadata - In case download aborted, metadata is correct
+  cache_meta(types = type, reset = TRUE)
+
   httr2::request(url) |>
     httr2::req_progress() |>
     httr2::req_perform(path = path)

@@ -132,3 +132,60 @@ ask <- function(msg, no_ask = NULL, call = rlang::caller_env()) {
   }
   go
 }
+
+#' Reads/Creates metadata table
+#'
+#' @returns
+#'
+#' @noRd
+#' @examples
+#' read_meta()
+
+read_meta <- function() {
+  path <- file.path(cache_dir(), "metadata.csv")
+
+  if (file.exists(path)) {
+    # Check if any files are missing and reset if so.
+    meta <- utils::read.csv(path) |>
+      lapply(as.character) |>
+      dplyr::as_tibble()
+
+    if (!all(is.na(meta$path))) {
+      missing_data <- !file.exists(meta$path[!is.na(meta$path)])
+      meta[missing_data, ] <- meta_blank()[missing_data, ]
+      utils::write.csv(meta, path, row.names = FALSE) # Update any missing files
+    }
+  } else {
+    meta <- meta_blank()
+  }
+  meta
+}
+
+write_meta <- function(meta) {
+  path <- file.path(cache_dir(), "metadata.csv")
+  utils::write.csv(meta, path, row.names = FALSE)
+}
+
+#' Create empty meta data table
+#'
+#' Used to create initial table or to reset specific data types as they start
+#' updating (this way if the update isn't complete, data is listed as missing).
+#'
+#' @param types Data types to include
+#'
+#' @returns Tibble of blank metadata
+#'
+#' @noRd
+#' @examples
+#' meta_blank()
+#' meta_blank("this_yr")
+
+meta_blank <- function(types = renmods()$types) {
+  dplyr::tibble(
+    type = types,
+    last_downloaded = NA_character_,
+    date_range = NA_character_,
+    renmods_version = NA_character_,
+    path = NA_character_
+  )
+}
