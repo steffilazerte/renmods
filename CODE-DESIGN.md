@@ -13,6 +13,7 @@
 ## Future ideas
 - Is it possible to download in parallel with [furrr](https://furrr.futureverse.org/)
 - Are there likely to be data versions for ENMODS? Is tracking the last date of download and the date range of the files sufficient to track this?
+- Right now the actual `renmods_connect()` tests are skipped if there is no locally downloaded data in the cache, but we could consider mocking a db for this (see https://docs.ropensci.org/dittodb/)
 
 ## Style
 - Use R version >= 4.1 with native pipe (`|>`) and `\(x)` anonymous functions
