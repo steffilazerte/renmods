@@ -8,7 +8,8 @@ renmods_connect(dates = NULL, types = "all")
 }
 \arguments{
 \item{dates}{Character or Date vector of length 2. Start and end dates for
-filtering data ("YYYY-MM-DD").}
+filtering data ("YYYY-MM-DD"). Note that data is filtered by the
+\code{Observed_Date_Time} field.}
 
 \item{types}{Character. Data types to connect to. One or more of
 "this_yr", "yr_2_5", "yr_5_10", "historic", or "all" (default "all").

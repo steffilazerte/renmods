@@ -48,6 +48,7 @@ test_that("renmods_connect() & renmods_disconnect()", {
   expect_message(tbl <- renmods_connect(types = "historic"), "Connecting to") |>
     expect_message("Last downloaded")
   expect_s3_class(tbl, "tbl_duckdb_connection")
+  expect_rows(tbl)
 
   # Check it has expected columns
   cols <- colnames(tbl)
@@ -65,6 +66,7 @@ test_that("renmods_connect() filters by date range", {
   dates <- c("2010-01-01", "2010-01-31")
   expect_message(tbl <- renmods_connect(dates = dates)) |> suppressMessages()
   expect_s3_class(tbl, "tbl_duckdb_connection")
+  expect_rows(tbl)
 
   renmods_disconnect(tbl)
 })
@@ -75,6 +77,7 @@ test_that("renmods_connect() works with specific types", {
   expect_message(tbl <- renmods_connect(types = "this_yr")) |>
     suppressMessages()
   expect_s3_class(tbl, "tbl_duckdb_connection")
+  expect_rows(tbl)
 
   renmods_disconnect(tbl)
 })
@@ -97,6 +100,7 @@ test_that("renmods_connect() works with multiple types", {
     expect_message("Last downloaded") |>
     expect_message("Last downloaded")
   expect_s3_class(tbl, "tbl_duckdb_connection")
+  expect_rows(tbl)
 
   renmods_disconnect(tbl)
 })
@@ -106,6 +110,7 @@ test_that("renmods_connect() works with 'all' types", {
 
   expect_message(tbl <- renmods_connect(types = "all")) |> suppressMessages()
   expect_s3_class(tbl, "tbl_duckdb_connection")
+  expect_rows(tbl)
 
   renmods_disconnect(tbl)
 })

@@ -23,7 +23,8 @@
 #' `collect()` function will run.
 #'
 #' @param dates Character or Date vector of length 2. Start and end dates for
-#'   filtering data ("YYYY-MM-DD").
+#'   filtering data ("YYYY-MM-DD"). Note that data is filtered by the
+#'   `Observed_Date_Time` field.
 #' @param types Character. Data types to connect to. One or more of
 #'   "this_yr", "yr_2_5", "yr_5_10", "historic", or "all" (default "all").
 #'   Ignored if `dates` is specified.
@@ -103,13 +104,19 @@ renmods_connect <- function(dates = NULL, types = "all") {
   )
 
   tbl <- db_connect() |>
-    duckdb::tbl_function(sql) |>
-    dplyr::filter(
-      # !! required because otherwise indexing [1] creates problems with the SQL commands
-      # !! means evaluate right away and pass the output on
-      .data$Observed_Date_Time >= !!dates[1],
-      .data$Observed_Date_Time <= !!dates[2]
-    )
+    duckdb::tbl_function(sql)
+
+  if (!is.null(dates)) {
+    tbl <- tbl |>
+      dplyr::filter(
+        # !! required because otherwise indexing [1] creates problems with the SQL commands
+        # !! means evaluate right away and pass the output on
+        .data$Observed_Date_Time >= !!dates[1],
+        .data$Observed_Date_Time <= !!dates[2]
+      )
+  }
+
+  tbl
 }
 
 #' Create general DuckDB connection with proper configuration
