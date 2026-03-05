@@ -22,7 +22,8 @@ renmods_connect(dates = NULL, types = "all")
 - dates:
 
   Character or Date vector of length 2. Start and end dates for
-  filtering data ("YYYY-MM-DD").
+  filtering data ("YYYY-MM-DD"). Note that data is filtered by the
+  `Observed_Date_Time` field.
 
 - types:
 

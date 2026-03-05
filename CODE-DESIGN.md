@@ -23,6 +23,11 @@
 - Are there likely to be data versions for ENMODS? Is tracking the last
   date of download and the date range of the files sufficient to track
   this?
+- Right now the actual
+  [`renmods_connect()`](http://steffilazerte.ca/renmods/reference/renmods_connect.md)
+  tests are skipped if there is no locally downloaded data in the cache,
+  but we could consider mocking a db for this (see
+  <https://docs.ropensci.org/dittodb/>)
 
 ## Style
 
