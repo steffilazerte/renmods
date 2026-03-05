@@ -203,8 +203,9 @@ read_meta <- function() {
       dplyr::as_tibble()
 
     if (!all(is.na(meta$path))) {
-      missing_data <- !file.exists(meta$path[!is.na(meta$path)])
-      meta[missing_data, ] <- meta_blank()[missing_data, ]
+      p <- meta$path
+      p[is.na(p)] <- ""
+      meta[!file.exists(p), ] <- meta_blank()[!file.exists(p), ]
       utils::write.csv(meta, path, row.names = FALSE) # Update any missing files
     }
   } else {
