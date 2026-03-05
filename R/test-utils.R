@@ -62,10 +62,10 @@ skip_if_no_type <- function(type) {
 }
 
 skip_on_local <- function() {
-  skip_if(!isTRUE(as.logical(Sys.getenv("CI", "false"))), "Not on CI")
+  testthat::skip_if(!isTRUE(as.logical(Sys.getenv("CI", "false"))), "Not on CI")
 }
 
 expect_rows <- function(db) {
-  n <- db |> head(1) |> collect() |> nrow()
-  expect_gt(n, 0)
+  n <- db |> utils::head(1) |> collect() |> nrow()
+  testthat::expect_gt(n, 0)
 }
