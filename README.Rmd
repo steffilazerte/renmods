@@ -32,7 +32,7 @@ coverage <- percent_coverage(coverage_detail) |>
 
 # renmods
 
-An R package to download, import, and filter data from [B.C.’s Environmental Monitoring Data System](https://www2.gov.bc.ca/gov/content/environment/research-monitoring-reporting/monitoring/environmental-monitoring-data-system) (EnMoDs) into R. 'renmods' package replaces 'rems' to support the new data system released in March 2026. 
+An R package to download, import, and filter data from [B.C.’s Environmental Monitoring Data System](https://www2.gov.bc.ca/gov/content/environment/research-monitoring-reporting/monitoring/environmental-monitoring-data-system) (EnMoDs) into R. The 'renmods' package replaces 'rems' to support the new data system released in March 2026. 
 
 The EnMoDs dataset is licensed under the [Open Government Licence - British Columbia](https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61).
 
