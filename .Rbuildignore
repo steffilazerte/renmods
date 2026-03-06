@@ -3,3 +3,13 @@
 ^README\.Rmd$
 ^CONTRIBUTING\.md$
 ^CODE_OF_CONDUCT\.md$
+^\.vscode$
+^[.]?air[.]toml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+^vignettes/articles$
+^CODE-DESIGN\.md$
+^RELEASE\.R$
+^covr$

@@ -1,18 +1,34 @@
 Package: renmods
 Title: Downloads and queries data from B.C. Environmental Monitoring Data System (EnMoDs)
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: c(
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre")),
+    person("Steffi", "LaZerte", email = "sel@steffilazerte.ca", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7690-8360")),
     person("Province of British Columbia", role = "cph")
   )
 Description: What the package does (one paragraph).
 License: Apache License (== 2.0) | file LICENSE
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
-Suggests: 
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr
 URL: https://github.com/bcgov/renmods
 BugReports: https://github.com/bcgov/renmods/issues
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends: 
+    R (>= 4.1.0),
+    cli (>= 3.6.5)
+Imports: 
+    DBI (>= 1.2.3),
+    dbplyr (>= 2.5.2),
+    dplyr (>= 1.2.0),
+    duckdb (>= 1.4.4),
+    httr2 (>= 1.2.1),
+    purrr (>= 1.2.1),
+    rlang (>= 1.1.7),
+    stringr (>= 1.6.0)
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    withr (>= 3.0.2)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Config/Needs/website: rmarkdown

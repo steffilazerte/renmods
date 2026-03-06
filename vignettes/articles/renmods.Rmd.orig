@@ -1,0 +1,100 @@
+---
+title: "renmods"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{renmods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(renmods)
+```
+
+
+Download/update the data and save to your cache.
+
+```{r}
+#| eval: false
+renmods_update(type = "all")
+```
+
+
+Connect to the database ENMODS table
+
+```{r}
+db <- renmods_connect()
+```
+
+Optionally, prefilter by data type or date range.
+
+```{r}
+db <- renmods_connect(type = "this_yr")
+db <- renmods_connect(dates = c("2024-12-15", "2025-01-15"))
+db <- renmods_connect(dates = c("2026-01-01", "2026-01-31"))
+```
+
+Collect the data into a data frame (from a database connection) for working/saving.
+The smaller the data set and the fewer data types, the fast this will go.
+
+```{r}
+df <- collect(db)
+```
+
+Or use the dplyr package to do more filtering before you collect the data.
+
+```{r}
+#| message: false
+library(dplyr)
+```
+
+First we'll check out what's in the data by exploring the first couple data points
+```{r}
+glimpse(db)
+```
+
+Remind yourself of the column names
+```{r}
+colnames(db)
+```
+
+Now we can filter by column values and collect the data into R
+```{r}
+df <- db |>
+  filter(Location_ID %in% c("E303052", "E309247")) |>
+  collect()
+
+df
+```
+
+You can also pre-select your columns of interest.
+
+```{r}
+df <- db |>
+  filter(Location_ID %in% c("E303052", "E309247")) |>
+  select(
+    "Location_ID",
+    "Location_Name",
+    "Observed_Date_Time",
+    "Observed_Property_Name",
+    "Result_Value",
+    "Result_Unit",
+    "Analysis_Method_ID"
+  ) |>
+  collect()
+
+df
+```
+
+Don't forget to close the connection to the database
+
+```{r}
+renmods_disconnect(db)
+```

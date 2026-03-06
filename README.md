@@ -1,7 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<!-- badges: start -->
+
 [![img](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
+[![R-CMD-check](https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml)
+[![Code Coverage:
+86%](https://img.shields.io/badge/code_coverage-86%25-green)](#code-coverage)
+<!-- badges: end -->
 
 # renmods
 
@@ -13,23 +19,28 @@ data system released in March 2026.
 
 The EnMoDs dataset is licensed under the [Open Government Licence -
 British
-Columbia](http://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61).
+Columbia](https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61).
 
 ### Features
 
+- Download ENMODS data and cache locally
+- Simple connections to the ENMODS database, only to as much data as
+  required to speed up load times.
+
 ### Installation
+
+``` r
+# install.packages("pak") # if not already installed
+
+library(pak)
+pkg_install("bcgov/renmods")
+```
 
 ### Usage
 
-TBD
-
-#### Example
-
-TBD
-
-``` r
-## basic example code
-```
+See the [Get
+Started](https://steffilazerte.github.io/renmods/articles/renmods.html)
+tutorial for details
 
 ### Project Status
 
@@ -48,6 +59,17 @@ If you would like to contribute to the package, please see our
 Please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
 to abide by its terms.
+
+## Code Coverage
+
+    #> renmods Coverage: 85.91%
+    #> R/checks.R: 72.46%
+    #> R/db.R: 87.04%
+    #> R/cache.R: 89.19%
+    #> R/utils.R: 89.19%
+    #> R/download.R: 100.00%
+    #> R/test-utils.R: 100.00%
+    #> R/zzz.R: 100.00%
 
 ### License
 

@@ -1,8 +1,8 @@
 ---
-title: "renmods"
+title: "Working with the cache"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{renmods}
+  %\VignetteIndexEntry{Working with the cache}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,4 +16,22 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(renmods)
+```
+
+Where is my cache?
+
+```{r}
+cache_dir()
+```
+
+What's the status of my cache?
+
+```{r}
+cache_status()
+```
+
+Remove my cache
+```{r}
+#| eval: false
+cache_remove()
 ```
