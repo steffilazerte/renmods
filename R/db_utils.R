@@ -4,7 +4,7 @@
 #' and converts to date).
 #'
 #' @param tbl DuckDB tbl created with [renmods_connect()]
-#' @param time_name Character. Field/Column name for date/time column from which
+#' @param time_col Character. Field/Column name for date/time column from which
 #' to extract a date.
 #' @param date_col Character. Name of the new field/column to create.
 #'
@@ -29,7 +29,7 @@ db_add_date <- function(tbl, time_col = "Observed_Date_Time", date_col = NULL) {
 #' converted fields.
 #'
 #' @export
-#' @examples
+
 db_fmt_times <- function(tbl) {
   time_cols <- stringr::str_subset(colnames(tbl), "Time")
   tbl <- dplyr::mutate(tbl, ren_tz = !!sql_get_tz("Observed_Date_Time"))

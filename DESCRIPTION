@@ -26,9 +26,10 @@ Imports:
     stringr (>= 1.6.0)
 Suggests: 
     knitr,
+    lubridate (>= 1.9.4),
     rmarkdown,
     testthat (>= 3.0.0),
     withr (>= 3.0.2)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-Config/Needs/website: rmarkdown, lubridate
+Config/Needs/website: rmarkdown

@@ -9,10 +9,10 @@ db_add_date(tbl, time_col = "Observed_Date_Time", date_col = NULL)
 \arguments{
 \item{tbl}{DuckDB tbl created with \code{\link[=renmods_connect]{renmods_connect()}}}
 
-\item{date_col}{Character. Name of the new field/column to create.}
-
-\item{time_name}{Character. Field/Column name for date/time column from which
+\item{time_col}{Character. Field/Column name for date/time column from which
 to extract a date.}
+
+\item{date_col}{Character. Name of the new field/column to create.}
 }
 \value{
 A \code{tbl_duckdb_connection} object - a lazy DuckDB table. With the

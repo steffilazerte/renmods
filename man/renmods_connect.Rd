@@ -4,7 +4,7 @@
 \alias{renmods_connect}
 \title{Connect to ENMODS data via DuckDB}
 \usage{
-renmods_connect(dates = NULL, types = "all")
+renmods_connect(dates = NULL, types = "all", convert_times = TRUE)
 }
 \arguments{
 \item{dates}{Character or Date vector of length 2. Start and end dates for
@@ -14,6 +14,10 @@ filtering data ("YYYY-MM-DD"). Note that data is filtered by the
 \item{types}{Character. Data types to connect to. One or more of
 "this_yr", "yr_2_5", "yr_5_10", "historic", or "all" (default "all").
 Ignored if \code{dates} is specified.}
+
+\item{convert_times}{Logical. Whether or not to convert character date/times
+to date/time format in R. Defaults to \code{TRUE}. If \code{FALSE} remain as
+character.}
 }
 \value{
 A \code{tbl_duckdb_connection} object - a lazy DuckDB table. Use dplyr
