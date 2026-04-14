@@ -111,6 +111,11 @@ check_cache <- function(type, force = FALSE) {
   } else if (force) {
     update <- TRUE
     cli_alert_info("Forcing update of cached data")
+  } else if (!check_version(type)) {
+    cli_alert_info(
+      "Cached data is from an older version of the package and should be updated"
+    )
+    update <- TRUE
   } else {
     update <- check_time_to_update(type)
   }
@@ -186,4 +191,19 @@ check_db_httpsfs <- function(con) {
       e
     }
   })
+}
+
+#' Check data version against package version
+#'
+#' @param type Character. Single data type to check.
+#'
+#' @returns TRUE if matches, FALSE if data older than package
+#'
+#' @noRd
+#' @examples
+#' check_version("this_yr")
+
+check_version <- function(type) {
+  v <- cache_meta(types = type)$renmods_version
+  v >= packageVersion("renmods")
 }
