@@ -28,6 +28,15 @@ takes precedence. Only the data files required will be connected to and the
 fewer data sources connected to and the smaller the dataset, the quicker the
 \code{collect()} function will run.
 }
+\details{
+Note that ENMODS stores date/times as character/text fields with the timezone
+indicated by +/- offset (e.g., '-08:00'). However, in R all values in a
+column must use the same timezone. Therefore times are converted to UTC-7:00
+(called \code{Etc/GMT+7}, note that \code{+} is correct; see the \href{https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List}{Wikipedia page on timezones}).
+The original timezone from \code{Observed_Date_Time} is stored in a new field
+\code{ren_tz} for reference. You can convert to any timezone using the
+\code{\link[lubridate:with_tz]{lubridate::with_tz()}} function.
+}
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # All data
@@ -38,6 +47,7 @@ db <- renmods_connect(types = "this_yr")
 
 # Connect only to data types required for a specific date range
 db <- renmods_connect(dates = c("2025-01-01", "2025-02-01"))
+db <- renmods_connect(dates = c("1990-01-01", "1990-02-01"))
 
 # Use dplyr to manipulate the data
 library(dplyr)
