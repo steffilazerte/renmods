@@ -162,6 +162,20 @@ df_tz$Observed_Date_Time[1:5]
 df_tz$Field_Visit_Start_Time[1:5]
 ```
 
+Finally, you can also prevent any date/time conversion and leave those fields
+as character.
+
+```{r}
+df <- renmods_connect(
+  dates = c("2024-12-15", "2025-01-15"),
+  convert_times = FALSE
+) |>
+  collect()
+
+# Note columns are character now
+select(df, contains("Time"))
+```
+
 ## Disconnecting
 
 Don't forget to close the connection to the database
