@@ -22,6 +22,15 @@
 #' fewer data sources connected to and the smaller the dataset, the quicker the
 #' `collect()` function will run.
 #'
+#' Note that ENMODS stores date/times as character/text fields with the timezone
+#' indicated by +/- offset (e.g., '-08:00'). However, in R all values in a
+#' column must use the same timezone. Therefore times are converted to UTC-7:00
+#' (called `Etc/GMT+7`, note that `+` is correct; see the [Wikipedia page on
+#' timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List)).
+#' The original timezone from `Observed_Date_Time` is stored in a new field
+#' `ren_tz` for reference. You can convert to any timezone using the
+#' [lubridate::with_tz()] function.
+#'
 #' @param dates Character or Date vector of length 2. Start and end dates for
 #'   filtering data ("YYYY-MM-DD"). Note that data is filtered by the
 #'   `Observed_Date_Time` field.
@@ -42,6 +51,7 @@
 #'
 #' # Connect only to data types required for a specific date range
 #' db <- renmods_connect(dates = c("2025-01-01", "2025-02-01"))
+#' db <- renmods_connect(dates = c("1990-01-01", "1990-02-01"))
 #'
 #' # Use dplyr to manipulate the data
 #' library(dplyr)
@@ -104,17 +114,20 @@ renmods_connect <- function(dates = NULL, types = "all") {
   )
 
   tbl <- db_connect() |>
-    duckdb::tbl_function(sql)
+    duckdb::tbl_function(sql) |>
+    db_add_date(date_col = "ren_date")
 
   if (!is.null(dates)) {
     tbl <- tbl |>
       dplyr::filter(
-        # !! required because otherwise indexing [1] creates problems with the SQL commands
-        # !! means evaluate right away and pass the output on
-        .data$Observed_Date_Time >= !!dates[1],
-        .data$Observed_Date_Time <= !!dates[2]
+        # !! to unquote and eval right away
+        .data$ren_date >= !!dates[1],
+        .data$ren_date <= !!dates[2]
       )
   }
+
+  # Fix all date/times
+  tbl <- db_fmt_times(tbl)
 
   tbl
 }
