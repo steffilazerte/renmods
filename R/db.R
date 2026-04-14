@@ -122,7 +122,11 @@ renmods_connect <- function(dates = NULL, types = "all") {
 #' Create general DuckDB connection with proper configuration
 #'
 #' Establishes a general DuckDB connection with autoinstall and autoload of
-#' extensions enabled, and checks for httpfs extension availability.
+#' extensions enabled, and checks for httpfs and icu extension availability.
+#'
+#' The data base connection converts all date/times to UTC-7:00 (called `Etc/GMT+7`
+#' see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List).
+#'
 #' Note that it is not currently connected to any files.
 #'
 #' @returns DuckDB connection object.
@@ -137,9 +141,12 @@ db_connect <- function() {
     config = list(
       autoinstall_known_extensions = TRUE,
       autoload_known_extensions = TRUE
-    )
+    ),
+    timezone_out = "Etc/GMT+7", # Otherwise defaults to UTC
+    tz_out_convert = "with" # Convert timezones, do not force
   )
   check_db_httpsfs(con)
+  check_db_icu(con)
   con
 }
 
