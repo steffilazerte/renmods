@@ -37,6 +37,9 @@
 #' @param types Character. Data types to connect to. One or more of
 #'   "this_yr", "yr_2_5", "yr_5_10", "historic", or "all" (default "all").
 #'   Ignored if `dates` is specified.
+#' @param convert_times Logical. Whether or not to convert character date/times
+#'   to date/time format in R. Defaults to `TRUE`. If `FALSE` remain as
+#'   character.
 #'
 #' @returns A `tbl_duckdb_connection` object - a lazy DuckDB table. Use dplyr
 #'   functions to filter/select, then `collect()` to load into R memory.
@@ -73,7 +76,7 @@
 #' # Remember to shut down the connection when you're done
 #' renmods_disconnect(db)
 
-renmods_connect <- function(dates = NULL, types = "all") {
+renmods_connect <- function(dates = NULL, types = "all", convert_times = TRUE) {
   if (!is.null(dates)) {
     dates <- check_dates(dates, range = TRUE)
     types <- which_data_types(dates)
@@ -127,7 +130,9 @@ renmods_connect <- function(dates = NULL, types = "all") {
   }
 
   # Fix all date/times
-  tbl <- db_fmt_times(tbl)
+  if (convert_times) {
+    tbl <- db_fmt_times(tbl)
+  }
 
   tbl
 }
