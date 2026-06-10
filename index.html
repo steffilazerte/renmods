@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Downloads and queries data from B.C. Environmental Monitoring Data System (EnMoDs) • renmods</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Downloads and queries data from B.C. Environmental Monitoring Data System (EnMoDs)">
 <meta name="description" content="What the package does (one paragraph).">
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">renmods</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,14 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="articles/renmods.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/cache.html">Working with the cache</a></li>
+    <li><a class="dropdown-item" href="articles/data_problems.html">renmods</a></li>
+    <li><a class="dropdown-item" href="articles/renmods_variables.html">renmods variables</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -51,7 +59,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="renmods">renmods<a class="anchor" aria-label="anchor" href="#renmods"></a>
 </h1></div>
-<p>An R package to download, import, and filter data from <a href="https://www2.gov.bc.ca/gov/content/environment/research-monitoring-reporting/monitoring/environmental-monitoring-data-system" class="external-link">B.C.’s Environmental Monitoring Data System</a> (EnMoDs) into R. ‘renmods’ package replaces ‘rems’ to support the new data system released in March 2026.</p>
+<p>An R package to download, import, and filter data from <a href="https://www2.gov.bc.ca/gov/content/environment/research-monitoring-reporting/monitoring/environmental-monitoring-data-system" class="external-link">B.C.’s Environmental Monitoring Data System</a> (EnMoDs) into R. The ‘renmods’ package replaces ‘rems’ to support the new data system released in March 2026.</p>
 <p>The EnMoDs dataset is licensed under the <a href="https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61" class="external-link">Open Government Licence - British Columbia</a>.</p>
 <div class="section level3">
 <h3 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
@@ -73,7 +81,7 @@
 <div class="section level3">
 <h3 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h3>
-<p>See the <a href="https://steffilazerte.github.io/renmods/articles/renmods.html" class="external-link">Get Started</a> tutorial for details</p>
+<p>See the <a href="https://bcgov.github.io/renmods/articles/renmods.html">Get Started</a> tutorial for details</p>
 </div>
 <div class="section level3">
 <h3 id="project-status">Project Status<a class="anchor" aria-label="anchor" href="#project-status"></a>
@@ -94,14 +102,15 @@
 <div class="section level2">
 <h2 id="code-coverage">Code Coverage<a class="anchor" aria-label="anchor" href="#code-coverage"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#&gt; renmods Coverage: 85.91%</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; R/checks.R: 72.46%</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; R/db.R: 87.04%</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#&gt; renmods Coverage: 83.09%</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; R/checks.R: 62.11%</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; R/db.R: 88.33%</span></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; R/cache.R: 89.19%</span></span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; R/utils.R: 89.19%</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; R/download.R: 100.00%</span></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt; R/test-utils.R: 100.00%</span></span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; R/zzz.R: 100.00%</span></span></code></pre></div>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; R/db_utils.R: 100.00%</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt; R/download.R: 100.00%</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; R/test-utils.R: 100.00%</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; R/zzz.R: 100.00%</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h3>
@@ -166,7 +175,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md" class="external-link"><img src="https://img.shields.io/badge/Lifecycle-Experimental-339999" alt="img"></a></li>
 <li><a href="https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/steffilazerte/renmods/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="#code-coverage"><img src="https://img.shields.io/badge/code_coverage-86%25-green" alt="Code Coverage: 86%"></a></li>
+<li><a href="#code-coverage"><img src="https://img.shields.io/badge/code_coverage-83%25-green" alt="Code Coverage: 83%"></a></li>
 </ul>
 </div>
 

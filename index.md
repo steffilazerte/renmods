@@ -3,8 +3,8 @@
 An R package to download, import, and filter data from [B.C.’s
 Environmental Monitoring Data
 System](https://www2.gov.bc.ca/gov/content/environment/research-monitoring-reporting/monitoring/environmental-monitoring-data-system)
-(EnMoDs) into R. ‘renmods’ package replaces ‘rems’ to support the new
-data system released in March 2026.
+(EnMoDs) into R. The ‘renmods’ package replaces ‘rems’ to support the
+new data system released in March 2026.
 
 The EnMoDs dataset is licensed under the [Open Government Licence -
 British
@@ -19,6 +19,7 @@ Columbia](https://www2.gov.bc.ca/gov/content?id=A519A56BC2BF44E4A008B33FCF527F61
 ### Installation
 
 ``` r
+
 # install.packages("pak") # if not already installed
 
 library(pak)
@@ -28,8 +29,8 @@ pkg_install("bcgov/renmods")
 ### Usage
 
 See the [Get
-Started](https://steffilazerte.github.io/renmods/articles/renmods.html)
-tutorial for details
+Started](https://bcgov.github.io/renmods/articles/renmods.html) tutorial
+for details
 
 ### Project Status
 
@@ -43,21 +44,22 @@ To report bugs/issues/feature requests, please file an
 ### How to Contribute
 
 If you would like to contribute to the package, please see our
-[CONTRIBUTING](http://steffilazerte.ca/renmods/CONTRIBUTING.md)
+[CONTRIBUTING](https://bcgov.github.io/renmods/CONTRIBUTING.md)
 guidelines.
 
 Please note that this project is released with a [Contributor Code of
-Conduct](http://steffilazerte.ca/renmods/CODE_OF_CONDUCT.md). By
+Conduct](https://bcgov.github.io/renmods/CODE_OF_CONDUCT.md). By
 participating in this project you agree to abide by its terms.
 
 ## Code Coverage
 
 ``` R
-#> renmods Coverage: 85.91%
-#> R/checks.R: 72.46%
-#> R/db.R: 87.04%
+#> renmods Coverage: 83.09%
+#> R/checks.R: 62.11%
+#> R/db.R: 88.33%
 #> R/cache.R: 89.19%
 #> R/utils.R: 89.19%
+#> R/db_utils.R: 100.00%
 #> R/download.R: 100.00%
 #> R/test-utils.R: 100.00%
 #> R/zzz.R: 100.00%

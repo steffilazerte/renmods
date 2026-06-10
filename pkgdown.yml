@@ -1,9 +1,12 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  articles/cache: cache.html
+  articles/data_problems: data_problems.html
+  articles/renmods_variables: renmods_variables.html
   articles/renmods: renmods.html
-last_built: 2026-03-05T23:53Z
+last_built: 2026-06-10T19:15Z
 urls:
-  reference: http://steffilazerte.ca/renmods/reference
-  article: http://steffilazerte.ca/renmods/articles
+  reference: https://bcgov.github.io/renmods/reference
+  article: https://bcgov.github.io/renmods/articles
